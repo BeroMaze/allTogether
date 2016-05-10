@@ -1,5 +1,27 @@
 var userName;
-function getLocation() {
+var groupName;
+var userInfo;
+
+function sendUserInfo() {
+  $('#submitName').hide();
+  $('#nameInput').hide();
+  console.log(userInfo);
+  $.post('/userLocation', {userper: userInfo}, function(data) {
+  }).done(function(data) {
+    console.log(data);
+    setInterval(getLocation, 1000)
+    setInterval(updateLocation, 2000);
+  });
+}
+
+function updateLocation() {
+  $.post('/updateUser', {update: userInfo}, function(data) {
+  }).done(function(data) {
+    console.log(data);
+  });
+}
+
+function getLocation(callback) {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(showPosition);
     }
@@ -7,27 +29,47 @@ function getLocation() {
       console.log('sorry please enable location for app');
     }
 }
-function showPosition(position) {
+
+getLocation();
+function showPosition(position,callback) {
   var userlat = position.coords.latitude;
   var userlong =position.coords.longitude;
-  var userInfo = {
+  userInfo = {
     'name': userName,
+    'group': groupName,
     'lat': userlat,
     'long': userlong
   };
-  $('#submitName').hide();
-  $('#submitName').hide();
-  $('.usersLocation').append('<h2 id="'+userName+'"><span class="name">'+userName+'</span><span class="location">'+' lat: '+ userlat+' long: '+userlong+'</span></h2>');
-
   console.log(userInfo);
-  $.post('/userLocation', {userper: userInfo}, function(data) {
-  }).done(function(data) {
-    console.log(data);
-  });
+  console.log(userlat);
 }
 
-
+$('#submitGroup').hide();
 $('#submitName').hide();
+$('#nameInput').hide();
+
+$('#groupName').on('keyup', function(event) {
+  event.preventDefault();
+  while (this.value.length > 0) {
+    $('#submitGroup').show();
+    return;
+  }
+  while (this.value.length ===0) {
+    $('#submitGroup').hide();
+    return;
+  }
+});
+
+
+$('#submitGroup').on('click', function(event) {
+  event.preventDefault();
+  groupName = $('#groupName').val();
+  $('#groupNameHeader').text(groupName);
+  $('#submitGroup').hide();
+  $('#groupName').hide();
+  $('#nameInput').show();
+});
+
 
 $('#nameInput').on('keyup', function(event) {
   event.preventDefault();
@@ -41,8 +83,11 @@ $('#nameInput').on('keyup', function(event) {
   }
 });
 
+
 $('#submitName').on('click', function(event) {
   event.preventDefault();
-  getLocation();
   userName = $('#nameInput').val();
+  userInfo.name = userName;
+  userInfo.group = groupName;
+  sendUserInfo();
 });
