@@ -1,23 +1,41 @@
 var userName;
 var groupName;
 var userInfo;
+var markers = [];
+firstTime = true;
 
 function sendUserInfo() {
   $('#submitName').hide();
   $('#nameInput').hide();
-  console.log(userInfo);
   $.post('/userLocation', {userper: userInfo}, function(data) {
   }).done(function(data) {
     console.log(data);
-    setInterval(getLocation, 1000)
-    setInterval(updateLocation, 2000);
+    initialize();
+    setInterval(getLocation, 1000);
+    setInterval(updateLocation, 5000);
   });
 }
 
 function updateLocation() {
   $.post('/updateUser', {update: userInfo}, function(data) {
   }).done(function(data) {
-    console.log(data);
+    // console.log(data);
+    var usersInfoArray = JSON.parse(data);
+    console.log(userInfo);
+    console.log(usersInfoArray);
+    console.log(markers);
+    function deleteMarkers() {
+      google.maps.Map.prototype.clearOverlays = function() {
+      for (var i = 0; i < markers.length; i++ ) {
+        markers[i].setMap(null);
+      }
+      markers.length = 0;
+    }
+    google.maps.Map.prototype.clearOverlays();
+        console.log(markers);
+      }
+      deleteMarkers();
+      movemarker(usersInfoArray);
   });
 }
 
@@ -40,8 +58,6 @@ function showPosition(position,callback) {
     'lat': userlat,
     'long': userlong
   };
-  console.log(userInfo);
-  console.log(userlat);
 }
 
 $('#submitGroup').hide();
