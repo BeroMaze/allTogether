@@ -3,6 +3,12 @@
   <head>
     <meta charset="utf-8">
     <title>All Together</title>
+    <style media="screen">
+    #map {
+        height: 500px;
+        width: 500px;
+      }
+    </style>
   </head>
   <body>
     <input type="text" id="groupName" name="groupName" placeholder="Group Name" value="" alt="Group Name">
@@ -13,7 +19,13 @@
     <div class="usersLocation">
 
     </div>
+    <div id="before_map">Test area...</div>
+    <div id="map"></div>
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" src="location.js"></script>
+    <script type="text/javascript" src='maps.js'></script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCdXtEF2I8QOQo4OkgmnZiOdWqhcT4QOx4">
+    </script>
   </body>
 </html>
