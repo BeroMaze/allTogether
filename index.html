@@ -11,15 +11,32 @@
     </style>
   </head>
   <body>
-    <input type="text" id="groupName" name="groupName" placeholder="Group Name" value="" alt="Group Name">
-    <input type="button" id="submitGroup" name="submit" value="Submit" alt="submit">
-    <h1 id="groupNameHeader"></h1>
-    <input type="text" id="nameInput" name="name" placeholder="Enter Name" value="" alt="Enter Your Name">
-    <input type="button" id="submitName" name="submit" value="Submit" alt="submit">
-    <div class="usersLocation">
+    <article id="createGroup">
+      <h1>Welcome To All Together</h1>
+      <h2>Enter your new group Name:</h2>
+      <h3 class='groupNameLabel'>Group Name:</h3>
+      <input type="text" id="groupName" name="groupName" placeholder="Group Name" value="" required alt="Group Name">
+      <h3 class='groupTimeLabel'>Number Of Days:</h3>
+      <input type="number" name="date" id='groupTime' min='1' max='31' placeholder="0" alt="Number off days" required value="">
+      <h3 class='groupMatesLabel'>Members Email:</h3>
+      <input id="groupMates" type="email" required="required" placeholder="Members Email" />
+        <input type="button" id="submitMate" name="submit" value="Submit Member" alt="submit member">
+      <div id="members"></div>
+      <input type="button" id="submitGroup" name="submit" value="Submit" alt="submit">
+      <p id="arhGroup"><u>Already have a group?</u></p>
+    </article>
 
-    </div>
-    <div id="before_map">Test area...</div>
+    <h1 id="groupNameHeader"></h1>
+    <p id='allGroupMembers'></p>
+
+    <article id="userLogin">
+      <input type="text" id="userNameInput" name="username" placeholder="User Name" value="" alt="user Name">
+      <input type="password" id="userPasswordInput" name="password" placeholder="User Password" value="" alt="Password">
+      <h6 id='newUser'><u>New User?</u></h6>
+    </article>
+
+    <input type="button" id="submitName" name="submit" value="Submit" alt="submit">
+    <div class="usersLocation"></div>
     <div id="map"></div>
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" src="location.js"></script>

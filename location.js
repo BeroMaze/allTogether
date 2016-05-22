@@ -2,6 +2,7 @@ var userName;
 var groupName;
 var userInfo;
 var markers = [];
+var allMembers = [];
 firstTime = true;
 
 function sendUserInfo() {
@@ -62,28 +63,65 @@ function showPosition(position,callback) {
 
 $('#submitGroup').hide();
 $('#submitName').hide();
-$('#nameInput').hide();
+$('#createGroup').hide();
+$('#groupTime').hide();
+$('#groupMates').hide();
+$('.groupTimeLabel').hide();
+$('.groupMatesLabel').hide();
+$('#submitMate').hide();
 
 $('#groupName').on('keyup', function(event) {
   event.preventDefault();
   while (this.value.length > 0) {
-    $('#submitGroup').show();
+    // $('#submitGroup').show();
+    $('#groupTime').show();
+    $('#groupMates').show();
+    $('.groupTimeLabel').show();
+    $('.groupMatesLabel').show();
     return;
   }
   while (this.value.length ===0) {
+    $('#groupTime').hide();
+    $('#groupMates').hide();
+    $('.groupTimeLabel').hide();
+    $('.groupMatesLabel').hide();
     $('#submitGroup').hide();
     return;
   }
 });
 
+$('#groupMates').on('keyup', function(event) {
+  event.preventDefault();
+  var matesEmail = this.value;
+  if (document.getElementById("groupMates").checkValidity()) {
+    console.log('email');
+    $('#submitMate').show();
+  }
+  else{
+    $('#submitMate').hide();
+  }
+});
+
+$('#submitMate').on('click', function(event) {
+  event.preventDefault();
+  var memberEmail = $('#groupMates').val();
+  $('#members').append(memberEmail+'<br>');
+  allMembers.push(memberEmail);
+  $('#groupMates').val('');
+  $('#submitGroup').show();
+});
 
 $('#submitGroup').on('click', function(event) {
   event.preventDefault();
   groupName = $('#groupName').val();
   $('#groupNameHeader').text(groupName);
-  $('#submitGroup').hide();
-  $('#groupName').hide();
-  $('#nameInput').show();
+  allMembers.forEach(function(each) {
+    $('#allGroupMembers').append(each+' <br>');
+  });
+  // $('#submitGroup').hide();
+  // $('#groupName').hide();
+  $('#createGroup').hide();
+  // $('#nameInput').show();
 });
 
 
