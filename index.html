@@ -30,9 +30,23 @@
     <p id='allGroupMembers'></p>
 
     <article id="userLogin">
-      <input type="text" id="userNameInput" name="username" placeholder="User Name" value="" alt="user Name">
-      <input type="password" id="userPasswordInput" name="password" placeholder="User Password" value="" alt="Password">
-      <h6 id='newUser'><u>New User?</u></h6>
+      <input id="userNameInput" type="text" required="required" name="username" placeholder="Username" value="" alt="userName">
+      <input id="userPasswordInput" type="password" required="required" name="password" placeholder="User Password" value="" alt="Password">
+      <h6 id='newUser'><u>New User</u></h6>
+    </article>
+
+    <article id="signUp">
+      <h1>Become a User and get All Together!</h1>
+      <h4>*All Feilds Required*</h4>
+      <input id="firstNameNew" type="text" required="required" name="name" value="" placeholder="First Name" alt="first Name"> <br>
+      <input id="lastNameNew" type="text" required="required" name="name" value="" placeholder="Last Name" alt="last Name"><br>
+      <input id="userEmail" type="email" required="required" placeholder="Email" alt="email" /><br>
+      <input id="userNameNew" type="text" required="required" name="name" value="" placeholder="Username" alt="username"><br>
+      <input id="passwordNew" type="password" required="required" name="password" value="" placeholder="Password" alt="password"><br>
+      <input id="passwordRe-enter" type="password" required="required" name="password" value="" placeholder="Re-enter Password" alt="Re-enter password"><br>
+      <input id="newUserSubmit" type="button" name="submit" value="Submit" alt="submit">
+
+
     </article>
 
     <input type="button" id="submitName" name="submit" value="Submit" alt="submit">

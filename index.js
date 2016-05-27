@@ -5,7 +5,7 @@ var bodyParser = require('body-parser');
 var pg = require('pg');
 var PORT = 3000;
 var conString = process.env.ELEPHANTSQL_URL;
-// var client = new pg.Client(conString);
+var userString = process.env.ELEPHANTSQL_URL_USER;
 var allUsers;
 
 
@@ -21,6 +21,19 @@ app.use(bodyParser());
 app.get('*', function(request, response) {
   // console.log('New request:', request.url);
   response.sendFile('index.html', { root: '.' });
+});
+
+app.post('/newUserInfo', function(req, res) {
+  var user = req.body;
+  pg.connect(userString, function(err, client, done) {
+    if(err) {
+      return console.log('error fetching client from pool', err);
+    }
+    client.query("CREATE TABLE IF NOT EXISTS allUsers (firstName varchar(64), lastName varchar(64), email varchar(64), userName varchar(64), password varchar(64))");
+    client.query("INSERT INTO allUsers(firstName, lastName, email, userName, password) values($1, $2, $3, $4, $5)", [user.firstName, user.lastName, user.email, user.userName, user.password]);
+    done();
+  });
+  res.send('created');
 });
 
 app.post('/userLocation', function(req, res) {

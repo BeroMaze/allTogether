@@ -69,6 +69,7 @@ $('#groupMates').hide();
 $('.groupTimeLabel').hide();
 $('.groupMatesLabel').hide();
 $('#submitMate').hide();
+$('#signUp').hide();
 
 $('#groupName').on('keyup', function(event) {
   event.preventDefault();
@@ -135,6 +136,37 @@ $('#nameInput').on('keyup', function(event) {
     $('#submitName').hide();
     return;
   }
+});
+
+$('#newUser').on('click', function(event) {
+  event.preventDefault();
+  $('#userLogin').hide();
+  $('#signUp').show();
+  $('#newUserSubmit').on('click', function(event) {
+    event.preventDefault();
+    if(($('#firstNameNew').val().length>2)&&($('#lastNameNew').val().length>2)&&(document.getElementById("userEmail").checkValidity())&& ($('#userNameNew').val().length>3)&&($('#passwordNew').val().length>3)&&($('#passwordRe-enter').val().length>3)) {
+      if ($('#passwordNew').val()===$('#passwordRe-enter').val()) {
+        $.post('/newUserInfo', {
+          firstName: $('#firstNameNew').val(),
+          lastName: $('#lastNameNew').val(),
+          email: $('#userEmail').val(),
+          userName: $('#userNameNew').val(),
+          password: window.btoa(window.btoa($('#passwordNew').val()))
+        }, function(data) {
+        }).done(function(data) {
+          console.log(data);
+          $('#signUp').hide();
+          $('#userLogin').show();
+        });
+      }
+      else {
+        alert('Passwords do not match. Please Try again.');
+      }
+    }
+    else {
+      alert('Please fill out all boxes.');
+    }
+  });
 });
 
 
