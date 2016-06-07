@@ -1,19 +1,22 @@
 var userName;
 var groupName;
-var userInfo;
+var groupNamePicked;
+var userInfo = {
+};
 var markers = [];
+var allMembers = [];
 firstTime = true;
 
 function sendUserInfo() {
   $('#submitName').hide();
   $('#nameInput').hide();
-  $.post('/userLocation', {userper: userInfo}, function(data) {
-  }).done(function(data) {
-    console.log(data);
-    initialize();
-    setInterval(getLocation, 1000);
-    setInterval(updateLocation, 5000);
-  });
+    $.post('/userLocation', {userper: userInfo}, function(data) {
+    }).done(function(data) {
+      console.log(data);
+      initialize();
+      setInterval(getLocation, 1000);
+      setInterval(updateLocation, 5000);
+    });
 }
 
 function updateLocation() {
@@ -25,12 +28,12 @@ function updateLocation() {
     console.log(usersInfoArray);
     console.log(markers);
     function deleteMarkers() {
-      google.maps.Map.prototype.clearOverlays = function() {
+        google.maps.Map.prototype.clearOverlays = function() {
       for (var i = 0; i < markers.length; i++ ) {
         markers[i].setMap(null);
       }
       markers.length = 0;
-    }
+    };
     google.maps.Map.prototype.clearOverlays();
         console.log(markers);
       }
@@ -48,43 +51,130 @@ function getLocation(callback) {
     }
 }
 
-getLocation();
 function showPosition(position,callback) {
   var userlat = position.coords.latitude;
   var userlong =position.coords.longitude;
+  var group = groupNamePicked;
+  var name = userName;
   userInfo = {
-    'name': userName,
-    'group': groupName,
-    'lat': userlat,
-    'long': userlong
+    name:name,
+    group:group,
+    userlat:userlat,
+    userlong:userlong
   };
 }
 
 $('#submitGroup').hide();
 $('#submitName').hide();
-$('#nameInput').hide();
+$('#createGroup').hide();
+$('#groupTime').hide();
+$('#groupMates').hide();
+$('.groupTimeLabel').hide();
+$('.groupMatesLabel').hide();
+$('#submitMate').hide();
+$('#signUp').hide();
 
 $('#groupName').on('keyup', function(event) {
-  event.preventDefault();
   while (this.value.length > 0) {
-    $('#submitGroup').show();
+    // $('#submitGroup').show();
+    $('#groupTime').show();
+    $('#groupMates').show();
+    $('.groupTimeLabel').show();
+    $('.groupMatesLabel').show();
     return;
   }
   while (this.value.length ===0) {
+    $('#groupTime').hide();
+    $('#groupMates').hide();
+    $('.groupTimeLabel').hide();
+    $('.groupMatesLabel').hide();
     $('#submitGroup').hide();
     return;
   }
 });
 
+$('#groupMates').on('keyup', function(event) {
+  event.preventDefault();
+  var matesEmail = this.value;
+  if (document.getElementById("groupMates").checkValidity()) {
+    console.log('email');
+    $('#submitMate').show();
+  }
+  else{
+    $('#submitMate').hide();
+  }
+});
+
+$('#submitMate').on('click', function(event) {
+  event.preventDefault();
+  var memberEmail = $('#groupMates').val();
+  $('#members').append(memberEmail+'<br>');
+  allMembers.push(memberEmail);
+  $('#groupMates').val('');
+  $('#submitGroup').show();
+});
 
 $('#submitGroup').on('click', function(event) {
   event.preventDefault();
   groupName = $('#groupName').val();
   $('#groupNameHeader').text(groupName);
-  $('#submitGroup').hide();
-  $('#groupName').hide();
-  $('#nameInput').show();
+  allMembers.forEach(function(each) {
+    $('#allGroupMembers').append(each+' <br>');
+  });
+  $('#createGroup').hide();
+  $.post('/sendGroupMembers',
+  { groupName: groupName,
+    allMembers: allMembers
+  }, function(data) {
+  });
 });
+
+$('#login').on('click', function(event) {
+  event.preventDefault();
+  $.post('/loginTime', {
+    email: $('#userEmailInput').val().toLowerCase(),
+    password: window.btoa(window.btoa($('#userPasswordInput').val()))
+  }, function(data) {
+  }).done(function(data) {
+    if (data === 'incorrect') {
+      alert('Login Incorrect. Please try logging in again.');
+    }
+    else{
+      $('#userLogin').hide();
+      $('#createGroup').show();
+      $('#userNameHeader').text(data.username);
+      getLocation();
+      userName = data.username;
+      if (data.groups !== null) {
+        console.log(data.groups);
+        var groups = data.groups.split(',');
+        console.log(groups);
+        groups.forEach(function(each) {
+          $('#usersGroups').append('<p class="usersGroup">'+each+'</p>');
+        });
+      }
+      else{
+        $('#usersGroups').append('<p>You currently are not part of any groups.</p>');
+      }
+      pickGroup();
+    }
+  });
+});
+
+function pickGroup() {
+  $('.usersGroup').on('click', function(event) {
+    event.preventDefault();
+    groupNamePicked = $(this).text();
+    userInfo.group = groupNamePicked;
+    $('#createGroup').hide();
+    sendUserInfo();
+
+    // $.post('/toGroup', {group: groupPicked}, function(data) {
+    // }).done(function(data) {
+    //
+    // });
+  });
+}
 
 
 $('#nameInput').on('keyup', function(event) {
@@ -97,6 +187,37 @@ $('#nameInput').on('keyup', function(event) {
     $('#submitName').hide();
     return;
   }
+});
+
+$('#newUser').on('click', function(event) {
+  event.preventDefault();
+  $('#userLogin').hide();
+  $('#signUp').show();
+  $('#newUserSubmit').on('click', function(event) {
+    event.preventDefault();
+    if(($('#firstNameNew').val().length>2)&&($('#lastNameNew').val().length>2)&&(document.getElementById("userEmail").checkValidity())&& ($('#userNameNew').val().length>3)&&($('#passwordNew').val().length>3)&&($('#passwordRe-enter').val().length>3)) {
+      if ($('#passwordNew').val()===$('#passwordRe-enter').val()) {
+        $.post('/newUserInfo', {
+          firstName:  $('#firstNameNew').val(),
+          lastName: $('#lastNameNew').val(),
+          email: $('#userEmail').val().toLowerCase(),
+          userName: $('#userNameNew').val(),
+          password: window.btoa(window.btoa($('#passwordNew').val()))
+        }, function(data) {
+        }).done(function(data) {
+          console.log(data);
+          $('#signUp').hide();
+          $('#userLogin').show();
+        });
+      }
+      else {
+        alert('Passwords do not match. Please Try again.');
+      }
+    }
+    else {
+      alert('Please fill out all boxes.');
+    }
+  });
 });
 
 
