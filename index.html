@@ -12,8 +12,12 @@
   </head>
   <body>
     <article id="createGroup">
-      <h1>Welcome To All Together</h1>
-      <h2>Enter your new group Name:</h2>
+      <h1>Welcome <span id='userNameHeader'></span></h1>
+      <h3 id="arhGroup"><u>Groups:</u></h3>
+      <div id="usersGroups">
+
+      </div>
+      <h2>Create a New Group:</h2>
       <h3 class='groupNameLabel'>Group Name:</h3>
       <input type="text" id="groupName" name="groupName" placeholder="Group Name" value="" required alt="Group Name">
       <h3 class='groupTimeLabel'>Number Of Days:</h3>
@@ -23,15 +27,16 @@
         <input type="button" id="submitMate" name="submit" value="Submit Member" alt="submit member">
       <div id="members"></div>
       <input type="button" id="submitGroup" name="submit" value="Submit" alt="submit">
-      <p id="arhGroup"><u>Already have a group?</u></p>
+
     </article>
 
     <h1 id="groupNameHeader"></h1>
     <p id='allGroupMembers'></p>
 
     <article id="userLogin">
-      <input id="userNameInput" type="text" required="required" name="username" placeholder="Username" value="" alt="userName">
+      <input id="userEmailInput" type="email" required="required" name="Email" placeholder="Email" value="" alt="Email">
       <input id="userPasswordInput" type="password" required="required" name="password" placeholder="User Password" value="" alt="Password">
+      <input id="login" type="button" name="submit" value="LogIn" alt='logIn'>
       <h6 id='newUser'><u>New User</u></h6>
     </article>
 

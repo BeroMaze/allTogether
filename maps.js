@@ -9,8 +9,6 @@ function movemarker(usersInfoArray){
       lonv = parseFloat(userLong);
 
       myLatlng = new google.maps.LatLng(latv,lonv);
-      var fld = document.getElementById('before_map');
-      fld.innerText = ' ' + 'lat:' + latv + ', lon: ' + lonv + ' ' + myLatlng.toString();
       // var image = {
       //   url:'http://files.softicons.com/download/game-icons/super-mario-icons-by-sandro-pereira/ico/Mushroom%20-%201UP.ico',
       //   size: new google.maps.Size(200, 150)
@@ -29,7 +27,7 @@ function movemarker(usersInfoArray){
   }
 
 function initialize(){
-    myLatlng = new google.maps.LatLng(userInfo.lat,userInfo.long);
+    myLatlng = new google.maps.LatLng(userInfo.userlat,userInfo.userlong);
     mapOptions =
     {
       center: myLatlng,

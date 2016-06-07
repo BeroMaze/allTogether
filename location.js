@@ -1,6 +1,8 @@
 var userName;
 var groupName;
-var userInfo;
+var groupNamePicked;
+var userInfo = {
+};
 var markers = [];
 var allMembers = [];
 firstTime = true;
@@ -8,13 +10,13 @@ firstTime = true;
 function sendUserInfo() {
   $('#submitName').hide();
   $('#nameInput').hide();
-  $.post('/userLocation', {userper: userInfo}, function(data) {
-  }).done(function(data) {
-    console.log(data);
-    initialize();
-    setInterval(getLocation, 1000);
-    setInterval(updateLocation, 5000);
-  });
+    $.post('/userLocation', {userper: userInfo}, function(data) {
+    }).done(function(data) {
+      console.log(data);
+      initialize();
+      setInterval(getLocation, 1000);
+      setInterval(updateLocation, 5000);
+    });
 }
 
 function updateLocation() {
@@ -26,12 +28,12 @@ function updateLocation() {
     console.log(usersInfoArray);
     console.log(markers);
     function deleteMarkers() {
-      google.maps.Map.prototype.clearOverlays = function() {
+        google.maps.Map.prototype.clearOverlays = function() {
       for (var i = 0; i < markers.length; i++ ) {
         markers[i].setMap(null);
       }
       markers.length = 0;
-    }
+    };
     google.maps.Map.prototype.clearOverlays();
         console.log(markers);
       }
@@ -49,15 +51,16 @@ function getLocation(callback) {
     }
 }
 
-getLocation();
 function showPosition(position,callback) {
   var userlat = position.coords.latitude;
   var userlong =position.coords.longitude;
+  var group = groupNamePicked;
+  var name = userName;
   userInfo = {
-    'name': userName,
-    'group': groupName,
-    'lat': userlat,
-    'long': userlong
+    name:name,
+    group:group,
+    userlat:userlat,
+    userlong:userlong
   };
 }
 
@@ -72,7 +75,6 @@ $('#submitMate').hide();
 $('#signUp').hide();
 
 $('#groupName').on('keyup', function(event) {
-  event.preventDefault();
   while (this.value.length > 0) {
     // $('#submitGroup').show();
     $('#groupTime').show();
@@ -119,11 +121,60 @@ $('#submitGroup').on('click', function(event) {
   allMembers.forEach(function(each) {
     $('#allGroupMembers').append(each+' <br>');
   });
-  // $('#submitGroup').hide();
-  // $('#groupName').hide();
   $('#createGroup').hide();
-  // $('#nameInput').show();
+  $.post('/sendGroupMembers',
+  { groupName: groupName,
+    allMembers: allMembers
+  }, function(data) {
+  });
 });
+
+$('#login').on('click', function(event) {
+  event.preventDefault();
+  $.post('/loginTime', {
+    email: $('#userEmailInput').val().toLowerCase(),
+    password: window.btoa(window.btoa($('#userPasswordInput').val()))
+  }, function(data) {
+  }).done(function(data) {
+    if (data === 'incorrect') {
+      alert('Login Incorrect. Please try logging in again.');
+    }
+    else{
+      $('#userLogin').hide();
+      $('#createGroup').show();
+      $('#userNameHeader').text(data.username);
+      getLocation();
+      userName = data.username;
+      if (data.groups !== null) {
+        console.log(data.groups);
+        var groups = data.groups.split(',');
+        console.log(groups);
+        groups.forEach(function(each) {
+          $('#usersGroups').append('<p class="usersGroup">'+each+'</p>');
+        });
+      }
+      else{
+        $('#usersGroups').append('<p>You currently are not part of any groups.</p>');
+      }
+      pickGroup();
+    }
+  });
+});
+
+function pickGroup() {
+  $('.usersGroup').on('click', function(event) {
+    event.preventDefault();
+    groupNamePicked = $(this).text();
+    userInfo.group = groupNamePicked;
+    $('#createGroup').hide();
+    sendUserInfo();
+
+    // $.post('/toGroup', {group: groupPicked}, function(data) {
+    // }).done(function(data) {
+    //
+    // });
+  });
+}
 
 
 $('#nameInput').on('keyup', function(event) {
@@ -147,9 +198,9 @@ $('#newUser').on('click', function(event) {
     if(($('#firstNameNew').val().length>2)&&($('#lastNameNew').val().length>2)&&(document.getElementById("userEmail").checkValidity())&& ($('#userNameNew').val().length>3)&&($('#passwordNew').val().length>3)&&($('#passwordRe-enter').val().length>3)) {
       if ($('#passwordNew').val()===$('#passwordRe-enter').val()) {
         $.post('/newUserInfo', {
-          firstName: $('#firstNameNew').val(),
+          firstName:  $('#firstNameNew').val(),
           lastName: $('#lastNameNew').val(),
-          email: $('#userEmail').val(),
+          email: $('#userEmail').val().toLowerCase(),
           userName: $('#userNameNew').val(),
           password: window.btoa(window.btoa($('#passwordNew').val()))
         }, function(data) {
