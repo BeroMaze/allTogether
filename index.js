@@ -3,7 +3,7 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var pg = require('pg');
-var PORT = 3000;
+var PORT = process.env.PORT;
 var conString = process.env.ELEPHANTSQL_URL;
 var userString = process.env.ELEPHANTSQL_URL_USER;
 var allUsers;
