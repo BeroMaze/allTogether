@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" href="/structure.css" media="screen" title="no title" charset="utf-8">
     <meta charset="utf-8">
     <title>All Together</title>
     <style media="screen">
@@ -11,52 +12,78 @@
     </style>
   </head>
   <body>
+    <header>
+      <h1 id="little">All Together</h1>
+      <h3 id="miniTitle">The App that keeps friends together!</h3>
+    </header>
+
     <article id="createGroup">
-      <h1>Welcome <span id='userNameHeader'></span></h1>
-      <h3 id="arhGroup"><u>Groups:</u></h3>
-      <div id="usersGroups">
+      <h1 id="welcomeUser">Welcome <span id='userNameHeader'></span></h1>
+      <div id="groupsChooses">
+        <div id="groupsBox">
+          <h3 id="arhGroup"><u>Groups:</u></h3>
+          <div id="usersGroups">
+          </div>
+        </div>
+        <div id="createGroupBox">
+          <h2>Create a New Group:</h2>
+          <h3 class='groupNameLabel'>Group Name:</h3>
+          <input type="text" id="groupName" name="groupName" placeholder="Group Name" value="" required alt="Group Name">
+          <h3 class='groupTimeLabel'>Number Of Days:</h3>
+          <input type="number" name="date" id='groupTime' min='1' max='31' placeholder="0" alt="Number off days" required value="">
+          <h3 class='groupMatesLabel'>Members Email:</h3>
+          <div class="inputGroupsEmail">
+            <input id="groupMates" type="email" required="required" placeholder="Members Email" />
+              <input type="button" id="submitMate" name="submit" value="Submit Member" alt="submit member">
+          </div>
 
+          <div id="members"></div>
+          <input type="button" id="submitGroup" name="submit" value="Submit" alt="submit">
+        </div>
       </div>
-      <h2>Create a New Group:</h2>
-      <h3 class='groupNameLabel'>Group Name:</h3>
-      <input type="text" id="groupName" name="groupName" placeholder="Group Name" value="" required alt="Group Name">
-      <h3 class='groupTimeLabel'>Number Of Days:</h3>
-      <input type="number" name="date" id='groupTime' min='1' max='31' placeholder="0" alt="Number off days" required value="">
-      <h3 class='groupMatesLabel'>Members Email:</h3>
-      <input id="groupMates" type="email" required="required" placeholder="Members Email" />
-        <input type="button" id="submitMate" name="submit" value="Submit Member" alt="submit member">
-      <div id="members"></div>
-      <input type="button" id="submitGroup" name="submit" value="Submit" alt="submit">
-
     </article>
 
-    <h1 id="groupNameHeader"></h1>
-    <p id='allGroupMembers'></p>
+    <article id="NewGroupMembers">
+      <h1 id="groupNameHeader"></h1>
+      <p id='allGroupMembers'></p>
+      <input type="button" id="toGroups" name="name" value="Back To Groups">
+    </article>
 
     <article id="userLogin">
-      <input id="userEmailInput" type="email" required="required" name="Email" placeholder="Email" value="" alt="Email">
-      <input id="userPasswordInput" type="password" required="required" name="password" placeholder="User Password" value="" alt="Password">
-      <input id="login" type="button" name="submit" value="LogIn" alt='logIn'>
-      <h6 id='newUser'><u>New User</u></h6>
+      <div class="loginBoxes">
+        <h2>Login</h2>
+        <input id="userEmailInput"  type="email" required="required" name="Email" placeholder="Email" value="" alt="Email">
+        <input id="userPasswordInput" type="password" required="required" name="password" placeholder="User Password" value="" alt="Password">
+        <input id="login" type="button" name="submit" value="LogIn" alt='logIn'>
+      </div>
+      <div class="createUserBox">
+        <h4>Want to Join All Together?</h4>
+        <h6 id='newUser'><u>Become A User</u></h6>
+      </div>
     </article>
 
     <article id="signUp">
-      <h1>Become a User and get All Together!</h1>
-      <h4>*All Feilds Required*</h4>
-      <input id="firstNameNew" type="text" required="required" name="name" value="" placeholder="First Name" alt="first Name"> <br>
-      <input id="lastNameNew" type="text" required="required" name="name" value="" placeholder="Last Name" alt="last Name"><br>
-      <input id="userEmail" type="email" required="required" placeholder="Email" alt="email" /><br>
-      <input id="userNameNew" type="text" required="required" name="name" value="" placeholder="Username" alt="username"><br>
-      <input id="passwordNew" type="password" required="required" name="password" value="" placeholder="Password" alt="password"><br>
-      <input id="passwordRe-enter" type="password" required="required" name="password" value="" placeholder="Re-enter Password" alt="Re-enter password"><br>
-      <input id="newUserSubmit" type="button" name="submit" value="Submit" alt="submit">
-
-
+      <div id="signUpForm">
+        <h1>Become a User and get All Together!</h1>
+        <h4>*All Feilds Required*</h4>
+        <input id="firstNameNew" type="text" required="required" name="name" value="" placeholder="First Name" alt="first Name"> <br>
+        <input id="lastNameNew" type="text" required="required" name="name" value="" placeholder="Last Name" alt="last Name"><br>
+        <input id="userEmail" type="email" required="required" placeholder="Email" alt="email" /><br>
+        <input id="userNameNew" type="text" required="required" name="name" value="" placeholder="Username" alt="username"><br>
+        <input id="passwordNew" type="password" required="required" name="password" value="" placeholder="Password" alt="password"><br>
+        <input id="passwordRe-enter" type="password" required="required" name="password" value="" placeholder="Re-enter Password" alt="Re-enter password"><br>
+        <input id="newUserSubmit" type="button" name="submit" value="Submit" alt="submit">
+      </div>
     </article>
 
     <input type="button" id="submitName" name="submit" value="Submit" alt="submit">
     <div class="usersLocation"></div>
     <div id="map"></div>
+
+    <footer>
+
+    </footer>
+
     <script src="https://code.jquery.com/jquery-2.2.0.min.js"></script>
     <script type="text/javascript" src="location.js"></script>
     <script type="text/javascript" src='maps.js'></script>

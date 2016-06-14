@@ -29,7 +29,7 @@ app.post('/newUserInfo', function(req, res) {
     if(err) {
       return console.log('error fetching client from pool', err);
     }
-    client.query("CREATE TABLE IF NOT EXISTS allUsers (firstName varchar(64), lastName varchar(64), email varchar(64), userName varchar(64), password varchar(64), groups varchar(64))");
+    client.query("CREATE TABLE IF NOT EXISTS allUsers (firstName varchar(64), lastName varchar(64), email varchar(64), userName varchar(64), password varchar(64), groups varchar(10000))");
     client.query("INSERT INTO allUsers(firstName, lastName, email, userName, password, groups) values($1, $2, $3, $4, $5, $6)", [user.firstName, user.lastName, user.email, user.userName, user.password, user.groups]);
     done();
   });
