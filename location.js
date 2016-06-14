@@ -7,9 +7,29 @@ var markers = [];
 var allMembers = [];
 firstTime = true;
 
+$(window).resize(function() {
+  windowSize();
+});
+
+function windowSize() {
+    var width = $(window).width();
+    var height = $(window).height();
+    $('#createGroup').css('width', width);
+    $('#createGroup').css('height', height * '0.81');
+    $('#NewGroupMembers').css('width', width);
+    $('#NewGroupMembers').css('height', height * '0.81');
+    $('#userLogin').css('width', width);
+    $('#userLogin').css('height', height * '0.81');
+    $('#signUp').css('width', width);
+    $('#signUp').css('height', height * '0.81');
+  };
+windowSize();
+
+
 function sendUserInfo() {
   $('#submitName').hide();
   $('#nameInput').hide();
+  $('#map').show();
     $.post('/userLocation', {userper: userInfo}, function(data) {
     }).done(function(data) {
       console.log(data);
@@ -73,6 +93,9 @@ $('.groupTimeLabel').hide();
 $('.groupMatesLabel').hide();
 $('#submitMate').hide();
 $('#signUp').hide();
+$('#map').hide();
+$('#NewGroupMembers').hide();
+$('#submitMate').hide();
 
 $('#groupName').on('keyup', function(event) {
   while (this.value.length > 0) {
@@ -81,6 +104,8 @@ $('#groupName').on('keyup', function(event) {
     $('#groupMates').show();
     $('.groupTimeLabel').show();
     $('.groupMatesLabel').show();
+    $('#submitMate').show();
+
     return;
   }
   while (this.value.length ===0) {
@@ -89,6 +114,7 @@ $('#groupName').on('keyup', function(event) {
     $('.groupTimeLabel').hide();
     $('.groupMatesLabel').hide();
     $('#submitGroup').hide();
+    $('#submitMate').hide();
     return;
   }
 });
@@ -117,6 +143,7 @@ $('#submitMate').on('click', function(event) {
 $('#submitGroup').on('click', function(event) {
   event.preventDefault();
   groupName = $('#groupName').val();
+  $('#NewGroupMembers').show();
   $('#groupNameHeader').text(groupName);
   allMembers.forEach(function(each) {
     $('#allGroupMembers').append(each+' <br>');
@@ -131,34 +158,43 @@ $('#submitGroup').on('click', function(event) {
 
 $('#login').on('click', function(event) {
   event.preventDefault();
-  $.post('/loginTime', {
-    email: $('#userEmailInput').val().toLowerCase(),
-    password: window.btoa(window.btoa($('#userPasswordInput').val()))
-  }, function(data) {
-  }).done(function(data) {
-    if (data === 'incorrect') {
-      alert('Login Incorrect. Please try logging in again.');
-    }
-    else{
-      $('#userLogin').hide();
-      $('#createGroup').show();
-      $('#userNameHeader').text(data.username);
-      getLocation();
-      userName = data.username;
-      if (data.groups !== null) {
-        console.log(data.groups);
-        var groups = data.groups.split(',');
-        console.log(groups);
-        groups.forEach(function(each) {
-          $('#usersGroups').append('<p class="usersGroup">'+each+'</p>');
-        });
+
+  if ($('#userPasswordInput').val().length > 1) {
+    $.post('/loginTime', {
+      email: $('#userEmailInput').val().toLowerCase(),
+      password: window.btoa(window.btoa($('#userPasswordInput').val()))
+    }, function(data) {
+    }).done(function(data) {
+      if (data === 'incorrect') {
+        alert('Login Incorrect. Please try logging in again.');
       }
       else{
-        $('#usersGroups').append('<p>You currently are not part of any groups.</p>');
+        $('#userLogin').hide();
+        $('#createGroup').show();
+        $('body').css('background-image', 'url("http://dlrprepschool.com/wp-content/uploads/2015/05/industry-groups-product-groups.jpg")');
+        $('body').css('background-repeat', 'repeat');
+        $('body').css('background-size', '40%');
+        $('#userNameHeader').text(data.username);
+        getLocation();
+        userName = data.username;
+        if (data.groups !== null) {
+          console.log(data.groups);
+          var groups = data.groups.split(',');
+          console.log(groups);
+          groups.forEach(function(each) {
+            $('#usersGroups').append('<p class="usersGroup">'+each+'</p>');
+          });
+        }
+        else{
+          $('#usersGroups').append('<p>You currently are not part of any groups.</p>');
+        }
+        pickGroup();
       }
-      pickGroup();
-    }
-  });
+    });
+  }
+  else{
+    alert('Password incorrect!!');
+  }
 });
 
 function pickGroup() {
@@ -227,4 +263,15 @@ $('#submitName').on('click', function(event) {
   userInfo.name = userName;
   userInfo.group = groupName;
   sendUserInfo();
+});
+
+$('#toGroups').on('click', function(event) {
+  event.preventDefault();
+  $('#NewGroupMembers').hide();
+  $('#createGroup').show();
+  $('#groupName').val('');
+  $('#groupTime').val('');
+  $('#groupMates').val('');
+  $('#members').empty(  );
+
 });
