@@ -1,4 +1,3 @@
-// "use strict";
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -7,7 +6,6 @@ var PORT = process.env.PORT;
 var conString = process.env.ELEPHANTSQL_URL;
 var userString = process.env.ELEPHANTSQL_URL_USER;
 var allUsers;
-
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -70,8 +68,6 @@ app.post('/loginTime', function(req, res) {
     // client.end();
     });
   });
-
-
 });
 
 app.post('/sendGroupMembers', function(req, res) {
@@ -188,14 +184,8 @@ app.post('/updateUser', function(req, res) {
       });
     });
   };
-
-  // client.connect(function(err) {
-  //   if(err) {
-  //     return console.error('could not connect to postgres', err);
-  //   }
     update_record();
     list_records();
-  // });
   res.send(allUsers);
 });
 
