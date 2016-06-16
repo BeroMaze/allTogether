@@ -14,6 +14,7 @@ app.use(function(req, res, next) {
 });
 
 app.use(express.static('./'));
+app.use('/static', express.static(__dirname + '/allTogether'));
 app.use(bodyParser());
 
 app.get('*', function(request, response) {
@@ -188,7 +189,6 @@ app.post('/updateUser', function(req, res) {
     list_records();
   res.send(allUsers);
 });
-
 
 
 app.listen(PORT, function(){
