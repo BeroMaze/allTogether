@@ -14,15 +14,16 @@ $(window).resize(function() {
 function windowSize() {
     var width = $(window).width();
     var height = $(window).height();
-    $('#createGroup').css('width', width);
-    $('#createGroup').css('height', height * '0.81');
-    $('#NewGroupMembers').css('width', width);
-    $('#NewGroupMembers').css('height', height * '0.81');
-    $('#userLogin').css('width', width);
-    $('#userLogin').css('height', height * '0.81');
-    $('#signUp').css('width', width);
-    $('#signUp').css('height', height * '0.81');
-  };
+      $('#createGroup').css('width', width);
+      $('#createGroup').css('height', height - 130);
+      $('#NewGroupMembers').css('width', width);
+      $('#NewGroupMembers').css('height', height - 130);
+      $('#userLogin').css('width', width);
+      $('#userLogin').css('height', height - 130);
+      $('#signUp').css('width', width);
+      $('#signUp').css('height', height - 130);
+    }
+
 windowSize();
 
 

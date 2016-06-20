@@ -1,0 +1,82 @@
+@media only screen and (max-device-width : 1024px) and (orientation : portrait) {
+
+  header{
+    display: flex;
+    flex-direction: row;
+    vertical-align: bottom;
+    justify-content: space-between;
+  }
+  #tittle{
+    text-align: left;
+    font-size: 2.5em;
+    margin-left: 14px;
+  }
+
+  #miniTitle{
+    text-align: right;
+    font-size: 1.5em;
+    margin-top: 27px;
+  }
+
+  .loginBoxes{
+    width: 80%;
+    height: 50%;
+    margin: auto;
+    font-size: 2em;
+  }
+
+  .loginInputs{
+    width: 80%;
+    height: 70px;
+    font-size: 1em;
+  }
+
+  #login{
+    font-size: 1.5em;
+    width: 50%;
+    margin-top: 20px;
+  }
+
+  .createUserBox{
+    width: 60%;
+    font-size: 2em;
+  }
+
+  #newUser{
+    font-size: 1em;
+  }
+
+  #welcomeUser{
+    font-size: 2em;
+  }
+
+  #groupsChooses{
+    flex-direction: column;
+    height: 100%;
+  }
+
+  #groupsBox{
+    width: 70%;
+    height: 40%;
+    font-size: 1.5em;
+  }
+  #createGroupBox{
+    margin: auto;
+    width: 70%;
+    height: 40%;
+    font-size: 1.5em;
+    overflow-x: hidden;
+  }
+
+  #createGroupBox input{
+    height: 40px;
+    font-size: 1.5em;
+  }
+
+  #submitMate{
+    width: 40%;
+    font-size: .3em;
+    height: 40px;
+  }
+
+}
